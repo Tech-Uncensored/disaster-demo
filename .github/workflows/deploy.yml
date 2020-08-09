@@ -13,6 +13,7 @@ jobs:
         with:
           host: ${{secrets.SSH_HOST}}
           key: ${{ secrets.SSH_KEY }}
+          username: ${{ secrets.SSH_USER }}
           script: |
             KEY=$(date +%Y%m%dT%H%M)
             sudo install -d -m 0755 -o nodejs -g nodejs /var/www/releases/disaster-$KEY           
@@ -20,6 +21,7 @@ jobs:
             git clone https://github.com/Tech-Uncensored/disaster-demo.git .
             ./scripts/deploy
   notify:
+    needs: deploy
     runs-on: ubuntu-latest
     steps:
       - name: Discord notification
@@ -28,4 +30,4 @@ jobs:
           DISCORD_USERNAME: "Github"
         uses: Ilshidur/action-discord@master
         with:
-          args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed. https://github.com/Tech-Uncensored/disaster-demo/pull/{{ EVENT_PAYLOAD.pull_request.id }}'
+          args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed. https://github.com/Tech-Uncensored/disaster-demo/pull/{{ EVENT_PAYLOAD.pull_request.number }}'
