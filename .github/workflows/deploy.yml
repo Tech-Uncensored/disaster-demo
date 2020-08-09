@@ -15,8 +15,9 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           username: ${{ secrets.SSH_USER }}
           script: |
+            su nodejs
             KEY=$(date +%Y%m%dT%H%M)
-            sudo install -d -m 0755 -o nodejs -g nodejs /var/www/disaster/releases/$KEY  
+            mkdir -p /var/www/disaster/releases/$KEY
             cd /var/www/disaster/releases/$KEY # navigate into the folder
             git clone https://github.com/Tech-Uncensored/disaster-demo.git .
             ./scripts/deploy
