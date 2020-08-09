@@ -6,8 +6,8 @@ KEY=${PWD#"/var/www/disaster/releases/"}
 
 ln -sfn /var/www/disaster/releases/$KEY /var/www/disaster/current
 
-pm2 stop app.js
+pm2 stop bin/www
 
-pm2 start app.js --name disaster
+PORT=3001 pm2 start bin/www --name disaster
 
 $PWD/scripts/post-deploy # Call post-deploy clean-up script
