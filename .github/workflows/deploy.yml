@@ -1,0 +1,31 @@
+name: Deploy application
+ 
+on:
+  push:
+    branches: [ master ]
+ 
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy NodeJS app
+        uses: appleboy/ssh-action@v0.1.2
+        with:
+          host: ${{secrets.SSH_HOST}}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            KEY=$(date +%Y%m%dT%H%M)
+            sudo install -d -m 0755 -o nodejs -g nodejs /var/www/releases/disaster-$KEY           
+            cd /var/www/releases/disaster-$KEY # navigate into the folder
+            git clone https://github.com/Tech-Uncensored/disaster-demo.git .
+            ./scripts/deploy
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          DISCORD_USERNAME: "Github"
+        uses: Ilshidur/action-discord@master
+        with:
+          args: 'The project {{ EVENT_PAYLOAD.repository.full_name }} has been deployed. https://github.com/Tech-Uncensored/disaster-demo/pull/{{ EVENT_PAYLOAD.pull_request.id }}'

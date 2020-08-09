@@ -1,0 +1,13 @@
+#!/bin/bash
+
+npm install # install dependencies 
+
+KEY=${PWD#"/var/www/releases/disaster-"}
+
+ln -sfn /var/www/disaster /var/www/releases/disaster-$KEY
+
+pm2 stop app.js
+
+pm2 start app.js --name disaster
+
+./post-deploy # Call post-deploy clean-up script
