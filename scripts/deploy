@@ -6,8 +6,10 @@ KEY=${PWD#"/var/www/disaster/releases/"}
 
 ln -sfn /var/www/disaster/releases/$KEY /var/www/disaster/current
 
-pm2 stop bin/www &> /dev/null
+pm2 stop disaster &> /dev/null
 
-PORT=3001 pm2 start bin/www --name disaster
+PORT=3001 pm2 start bin/www --name disaster &> /dev/null
 
 $PWD/scripts/post-deploy # Call post-deploy clean-up script
+
+exit 0
