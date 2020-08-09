@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rm `ls -t /var/www/disaster/releases/ | awk 'NR>2'`
+rm `ls -t /var/www/disaster/releases/ | awk 'NR>2'` &> /dev/null
