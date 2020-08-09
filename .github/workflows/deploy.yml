@@ -16,11 +16,10 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           script: |
             KEY=$(date +%Y%m%dT%H%M)
-            su nodejs
-            && mkdir -p /var/www/disaster/releases/$KEY
-            && cd /var/www/disaster/releases/$KEY # navigate into the folder
-            && git clone https://github.com/Tech-Uncensored/disaster-demo.git .
-            && ./scripts/deploy
+            mkdir -p /var/www/disaster/releases/$KEY
+            cd /var/www/disaster/releases/$KEY # navigate into the folder
+            git clone https://github.com/Tech-Uncensored/disaster-demo.git .
+            ./scripts/deploy
   notify:
     needs: deploy
     runs-on: ubuntu-latest
