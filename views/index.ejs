@@ -5,7 +5,19 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %>! Hope this works!</p>
+    <h1>Select a song to play:</h1>
+    <div class="container">
+      <div class="songs">
+        <% for(let i = 0; i < songs.length; i++) { %>
+        <div class="song">
+          <div class="coverart">
+            <img src="<%= songs[i].coverart %>" />
+          </div>
+          <div class="title"><%= songs[i].title %></div>
+          <div class="playcount"></div>
+        </div>
+        <% } %>
+      </div>
+    </div>
   </body>
 </html>
