@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 const { ensureAuthenticated, forwardAuthenticated } = require('../lib/auth')
 const db = require('../models/')
-const session = require('express-session')
+const session = require('express-session');
+const DashboardService = require('../services/DashboardService');
 
 /* GET home page. */
 router.get('/', forwardAuthenticated, function(req, res, next) {
@@ -10,45 +11,12 @@ router.get('/', forwardAuthenticated, function(req, res, next) {
 });
 
 router.get('/dashboard', ensureAuthenticated, async (req, res) => {
-    let rows = await queryWeatherData()
-    let userRows = await queryUserData()
-    let regionRows = await queryRegionData()
+    let dashboard = new DashboardService(db, req.user.id);
+    let params = await dashboard.params();
     let userObject = {
         name: req.user.email
     }
-    res.render('dashboard', { data: rows, userData: userRows[0] || {}, regionData: regionRows, userSession: userObject })
-
-    async function queryRegionData() {
-        let user_id = req.user.id
-
-        let data = await db.Region.findAll({
-            where: {
-                user_id: user_id
-            }
-        })
-
-        return data
-    }
-
-    async function queryWeatherData() {
-
-        let data = await db.Weather.findAll()
-
-        return data
-    }
-
-    async function queryUserData() {
-        let user_id = req.user.id
-
-        /* BREAK HERE */ 
-        let data = await db.Settings.findOrCreate({
-            where: {
-                user_id: user_id
-            }
-        })
-
-        return data
-    }
+    res.render('dashboard', { ...params, userSession: userObject })
 })
 
 module.exports = router;
