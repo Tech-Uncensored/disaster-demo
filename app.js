@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+import * as Sentry from '@sentry/node';
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -15,10 +16,13 @@ require('./initalizers/passport')(passport)
 
 var app = express();
 
+Sentry.init({ dsn: 'https://cba033986c0740c3a7c6e2b73cc9427b@o433502.ingest.sentry.io/5388777' });
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+app.use(Sentry.Handlers.requestHandler());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -58,6 +62,7 @@ app.use(function(req, res, next) {
 });
 
 // error handler
+app.use(Sentry.Handlers.errorHandler());
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
