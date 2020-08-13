@@ -1,6 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
-import * as Sentry from '@sentry/node';
+const Sentry = require('@sentry/node');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
