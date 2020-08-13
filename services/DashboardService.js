@@ -1,5 +1,5 @@
-const User = require('../lib/User');
-const Weather = require('../lib/Weather');
+const User = require('../lib/user');
+const Weather = require('../lib/weather');
 
 class DashboardService {
     constructor(db, userid) {
