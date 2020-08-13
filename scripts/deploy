@@ -6,11 +6,9 @@ KEY=${PWD#"/var/www/disaster/releases/"}
 
 ln -sfn /var/www/disaster/releases/$KEY /var/www/disaster/current
 
-pm2 delete $(x=$(pm2 id disaster) && echo "${x:2:1}") &> /dev/null
+pm2 delete $(x=$(pm2 id disaster) && echo "${x:2:1}") &> /dev/null # doesn't work when we hit double digit pids
 
-/bin/bash -c "echo \$DB_CONNECTION_STRING"
-
-PORT=3001 NODE_ENV=production DB_CONNECTION_STRING="\$DB_CONNECTION_STRING" pm2 start bin/www --name disaster &> /dev/null
+/bin/bash -c "PORT=3001 NODE_ENV=production DB_CONNECTION_STRING=\"\$DB_CONNECTION_STRING\" pm2 start bin/www --name disaster" &> /dev/null
 
 $PWD/scripts/post-deploy # Call post-deploy clean-up script
 
