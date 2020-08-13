@@ -65,6 +65,50 @@
                 </div>
             </div>
         </div>
+
+        <div class="row header">
+
+            <div class="col m2">
+                <div>ID</div>
+            </div>
+            <div class="col m2">
+                <div>Description</div>
+            </div>
+            <div class="col m2">
+                <div>Main</div>
+            </div>
+            <div class="col m2">
+                <div>Temptrature</div>
+            </div>
+            <div class="col m2">
+                <div>Feels Like</div>
+            </div>
+            <div class="col m2">
+                <div>Humidity</div>
+            </div>
+        </div>
+        <% for (var i = 0; i < data.length; i++) { %>
+        <div class="row">
+            <div class="col m2">
+                <div><%= data[i].id %></div>
+            </div>
+            <div class="col m2">
+                <div><%= data[i].desc %></div>
+            </div>
+            <div class="col m2">
+                <div><%= data[i].main %></div>
+            </div>
+            <div class="col m2">
+                <div><%= data[i].temp %>&#8457;</div>
+            </div>
+            <div class="col m2">
+                <div><%= data[i].feels_like %>&#8457;</div>
+            </div>
+            <div class="col m2">
+                <div><%= data[i].humidity %></div>
+            </div>
+        </div>
+        <% } %>
     </div> <!-- End Container -->
     <!-- Settings Modal -->
     <div id="settings" class="modal">
